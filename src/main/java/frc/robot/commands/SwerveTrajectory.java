@@ -3,8 +3,6 @@ package frc.robot.commands;
 
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -37,43 +35,16 @@ public class SwerveTrajectory extends CommandBase {
     @Override
     public void execute() {
         // If the path has not completed time wise
-        boolean shouldMirror = (FieldConstants.ALLIANCE == Alliance.Red) && (FieldConstants.GAME_MODE == FieldConstants.GameMode.AUTONOMOUS);
-        // System.out.printf("Elapsed Time %.3f\n", elapsedTime - pathTraj.getTotalTimeSeconds());
 
         PathPlannerState state = (PathPlannerState) trajectory.sample(elapsedTime.get());
-        PathPlannerState mirroredState = new PathPlannerState();
-
-        // Create a new pathplannerstate based on the mirrored state's position
-        // and taking the mirrored state's rotation and adding 180 degrees
-        if (shouldMirror) {
-
-        mirroredState.timeSeconds                       = state.timeSeconds;
-        mirroredState.velocityMetersPerSecond           = state.velocityMetersPerSecond;
-        mirroredState.accelerationMetersPerSecondSq     = state.accelerationMetersPerSecondSq;
-        mirroredState.poseMeters                        = new Pose2d(
-            (FieldConstants.FIELD_WIDTH_METERS - state.poseMeters.getTranslation().getX()),
-            state.poseMeters.getTranslation().getY(),
-            state.poseMeters.getRotation().unaryMinus().plus(Rotation2d.fromDegrees(Math.PI))
-            );
-        mirroredState.curvatureRadPerMeter              = state.curvatureRadPerMeter;
-        mirroredState.holonomicRotation                 = state.holonomicRotation.plus(Rotation2d.fromRadians(Math.PI)).unaryMinus();
-        mirroredState.angularVelocityRadPerSec          = state.angularVelocityRadPerSec;
-        mirroredState.holonomicAngularVelocityRadPerSec = state.holonomicAngularVelocityRadPerSec;
-
-        }
         
         // Use elapsedTime as a refrence for where we NEED to be
         // Then, sample the position and rotation for that time,
         // And calculate the ChassisSpeeds required to get there
         ChassisSpeeds speeds = AutoConstants.HDC.calculate(
             swerve.getPose(),
-            // Pass in the alliance to flip on the Y if on red alliance
-            (shouldMirror) 
-                ? mirroredState
-                : state,
-            (shouldMirror) 
-                ? mirroredState.holonomicRotation 
-                : state.holonomicRotation);
+            state,
+            state.holonomicRotation);
 
         // Set the states for the motor using calculated values above
         // It is important to note that fieldRelative is false,
@@ -82,12 +53,12 @@ public class SwerveTrajectory extends CommandBase {
         swerve.drive(
             speeds.vxMetersPerSecond,
             speeds.vyMetersPerSecond,
-            speeds.omegaRadiansPerSecond, false, false);
+            speeds.omegaRadiansPerSecond, false);
     }
 
     @Override
     public void end(boolean interrupted) {
-        swerve.drive(0, 0, 0, false, false);
+        swerve.drive(0, 0, 0, false);
     }
 
     @Override

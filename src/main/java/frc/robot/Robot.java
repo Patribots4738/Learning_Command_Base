@@ -3,6 +3,7 @@ package frc.robot;
 import com.revrobotics.REVPhysicsSim;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.util.Constants.FieldConstants.GameMode;
@@ -17,7 +18,9 @@ public class Robot extends TimedRobot {
 
     private Command autonomousCommand;
     private Command disabledCommand;
-
+    public static double currentTimestamp = 0;
+    public static double modeStartTimestamp = 0;
+    
     private RobotContainer robotContainer;
 
 
@@ -35,6 +38,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
+        currentTimestamp = Timer.getFPGATimestamp();
         CommandScheduler.getInstance().run();
     }
 

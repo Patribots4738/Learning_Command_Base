@@ -5,10 +5,8 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Swerve;
-import frc.robot.util.Constants.FieldConstants;
 
 public class Drive extends CommandBase {
 
@@ -18,7 +16,6 @@ public class Drive extends CommandBase {
     private final DoubleSupplier ySupplier;
     private final DoubleSupplier rotationSupplier;
     private final BooleanSupplier fieldRelativeSupplier;
-    private final BooleanSupplier rateLimitSupplier;
     private final BooleanSupplier shouldMirror;
     
     public Drive(
@@ -38,13 +35,12 @@ public class Drive extends CommandBase {
         this.rotationSupplier = rotationsSupplier;
 
         this.fieldRelativeSupplier = fieldRelativeSupplier;
-        this.rateLimitSupplier = rateLimitSupplier;
         this.shouldMirror = shouldMirror;
 
         addRequirements(swerve);
     }
 
-    public Drive (Swerve swerve, Supplier<ChassisSpeeds> speeds, BooleanSupplier rateLimitSupplier, BooleanSupplier fieldRelativeSupplier, BooleanSupplier shouldMirror) {
+    public Drive (Swerve swerve, Supplier<ChassisSpeeds> speeds, BooleanSupplier fieldRelativeSupplier, BooleanSupplier shouldMirror) {
         
         this.swerve = swerve;
         
@@ -53,7 +49,6 @@ public class Drive extends CommandBase {
         this.rotationSupplier = () -> speeds.get().omegaRadiansPerSecond;
 
         this.fieldRelativeSupplier = fieldRelativeSupplier;
-        this.rateLimitSupplier = rateLimitSupplier;
         this.shouldMirror = shouldMirror;
 
         addRequirements(swerve);
@@ -74,14 +69,13 @@ public class Drive extends CommandBase {
             x,
             y,
             rotationSupplier.getAsDouble(), 
-            fieldRelativeSupplier.getAsBoolean(), 
-            rateLimitSupplier.getAsBoolean()
+            fieldRelativeSupplier.getAsBoolean()
         );
     }
 
     @Override
     public void end(boolean interrupted) {
-        swerve.drive(0, 0, 0, false, false);
+        swerve.drive(0, 0, 0, false);
     }
 
     @Override
