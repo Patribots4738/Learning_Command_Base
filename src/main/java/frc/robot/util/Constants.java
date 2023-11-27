@@ -179,38 +179,34 @@ public final class Constants {
         public static final double ROTATION_CORRECTION_I = 0;
         public static final double ROTATION_CORRECTION_D = 0.0025;
 
-        public static final PIDConstants XY_PID_CONSTANTS = 
-            new PIDConstants(
-                XY_CORRECTION_P, XY_CORRECTION_I, XY_CORRECTION_D
-            );
+        public static final PIDConstants XY_PID_CONSTANTS = new PIDConstants(
+                XY_CORRECTION_P, XY_CORRECTION_I, XY_CORRECTION_D);
 
-        public static final PIDConstants THETA_PID_CONSTANTS = 
-            new PIDConstants(
-                ROTATION_CORRECTION_P, ROTATION_CORRECTION_I, ROTATION_CORRECTION_D
-            );
+        public static final PIDConstants THETA_PID_CONSTANTS = new PIDConstants(
+                ROTATION_CORRECTION_P, ROTATION_CORRECTION_I, ROTATION_CORRECTION_D);
 
         // Constraint for the motion-profiled robot angle controller
         public static final TrapezoidProfile.Constraints THETA_CONTROLLER_CONSTRAINTS = new TrapezoidProfile.Constraints(
                 MAX_ANGULAR_SPEED_RADIANS_PER_SECOND, MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED);
 
         public static final HolonomicDriveController HDC = new HolonomicDriveController(
-            new PIDController(
-                    AutoConstants.XY_CORRECTION_P,
-                    AutoConstants.XY_CORRECTION_I,
-                    AutoConstants.XY_CORRECTION_D),
-            new PIDController(
-                    AutoConstants.XY_CORRECTION_P,
-                    AutoConstants.XY_CORRECTION_I,
-                    AutoConstants.XY_CORRECTION_D),
-            new ProfiledPIDController(
-                    AutoConstants.ROTATION_CORRECTION_P,
-                    AutoConstants.ROTATION_CORRECTION_I,
-                    AutoConstants.ROTATION_CORRECTION_D,
-                    new TrapezoidProfile.Constraints(
-                            AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND,
-                            AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED)));
+                new PIDController(
+                        AutoConstants.XY_CORRECTION_P,
+                        AutoConstants.XY_CORRECTION_I,
+                        AutoConstants.XY_CORRECTION_D),
+                new PIDController(
+                        AutoConstants.XY_CORRECTION_P,
+                        AutoConstants.XY_CORRECTION_I,
+                        AutoConstants.XY_CORRECTION_D),
+                new ProfiledPIDController(
+                        AutoConstants.ROTATION_CORRECTION_P,
+                        AutoConstants.ROTATION_CORRECTION_I,
+                        AutoConstants.ROTATION_CORRECTION_D,
+                        new TrapezoidProfile.Constraints(
+                                AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND,
+                                AutoConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED)));
     }
-    
+
     public static final class FieldConstants {
 
         public static boolean IS_SIMULATION = Robot.isSimulation();

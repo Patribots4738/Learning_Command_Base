@@ -32,7 +32,7 @@ public class RobotContainer {
     private final Swerve swerve;
     private final Elevator elevator;
     private final Claw claw;
-    
+
     public RobotContainer() {
         Logger.configureLoggingAndConfig(this, false);
 
@@ -46,14 +46,13 @@ public class RobotContainer {
         claw = new Claw();
 
         swerve.setDefaultCommand(new Drive(
-            swerve,
-            driver::getLeftY,
-            driver::getLeftX,
-            () -> -driver.getRightX(),
-            () -> !driver.y().getAsBoolean(),
-            () -> !driver.y().getAsBoolean(),
-            () -> (driver.y().getAsBoolean() && FieldConstants.ALLIANCE == Alliance.Blue)
-        ));
+                swerve,
+                driver::getLeftY,
+                driver::getLeftX,
+                () -> -driver.getRightX(),
+                () -> !driver.y().getAsBoolean(),
+                () -> !driver.y().getAsBoolean(),
+                () -> (driver.y().getAsBoolean() && FieldConstants.ALLIANCE == Alliance.Blue)));
 
         incinerateMotors();
         configureButtonBindings();
@@ -70,35 +69,31 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
 
-        new Trigger(() -> FieldConstants.GAME_MODE == FieldConstants.GameMode.TELEOP || FieldConstants.GAME_MODE == FieldConstants.GameMode.TEST)
-            .onTrue(
-                setDriveSpeed(DriveConstants.MAX_TELEOP_SPEED_METERS_PER_SECOND)
-            );
+        new Trigger(() -> FieldConstants.GAME_MODE == FieldConstants.GameMode.TELEOP
+                || FieldConstants.GAME_MODE == FieldConstants.GameMode.TEST)
+                .onTrue(
+                        setDriveSpeed(DriveConstants.MAX_TELEOP_SPEED_METERS_PER_SECOND));
 
         new Trigger(() -> FieldConstants.GAME_MODE == FieldConstants.GameMode.AUTONOMOUS)
-            .onTrue(
-                setDriveSpeed(AutoConstants.MAX_SPEED_METERS_PER_SECOND)
-            );
+                .onTrue(
+                        setDriveSpeed(AutoConstants.MAX_SPEED_METERS_PER_SECOND));
 
         driver.start().or(driver.back()).onTrue(
-            Commands.runOnce(() -> swerve.resetOdometry(
-                new Pose2d(
-                    swerve.getPose().getTranslation(), 
-                    Rotation2d.fromDegrees(
-                        FieldConstants.ALLIANCE == Alliance.Red 
-                        ? 0 
-                        : 180))
-            ), swerve)
-        );
+                Commands.runOnce(() -> swerve.resetOdometry(
+                        new Pose2d(
+                                swerve.getPose().getTranslation(),
+                                Rotation2d.fromDegrees(
+                                        FieldConstants.ALLIANCE == Alliance.Red
+                                                ? 0
+                                                : 180))),
+                        swerve));
 
         driver.a()
-            .whileTrue(
-                Commands.sequence(
-                    setDriveSpeed(FieldConstants.ALIGNMENT_SPEED)
-                )
-            ).onFalse(
-                setDriveSpeed(DriveConstants.MAX_TELEOP_SPEED_METERS_PER_SECOND)
-            );
+                .whileTrue(
+                        Commands.sequence(
+                                setDriveSpeed(FieldConstants.ALIGNMENT_SPEED)))
+                .onFalse(
+                        setDriveSpeed(DriveConstants.MAX_TELEOP_SPEED_METERS_PER_SECOND));
 
         driver.leftBumper().whileTrue(Commands.run(swerve::getSetWheelsX));
 
@@ -110,8 +105,8 @@ public class RobotContainer {
     }
 
     private CommandBase setDriveSpeed(double desiredSpeedMetersPerSecond) {
-        return Commands.runOnce(() -> { 
-            DriveConstants.MAX_SPEED_METERS_PER_SECOND = desiredSpeedMetersPerSecond; 
+        return Commands.runOnce(() -> {
+            DriveConstants.MAX_SPEED_METERS_PER_SECOND = desiredSpeedMetersPerSecond;
         });
     }
 
@@ -126,8 +121,8 @@ public class RobotContainer {
 
     public void onEnabled(GameMode gameMode) {
         Commands.runOnce(() -> Robot.modeStartTimestamp = Robot.currentTimestamp)
-            .andThen(Commands.runOnce(() -> FieldConstants.GAME_MODE = gameMode))
-            .schedule();
+                .andThen(Commands.runOnce(() -> FieldConstants.GAME_MODE = gameMode))
+                .schedule();
     }
 
     private void incinerateMotors() {
@@ -137,5 +132,5 @@ public class RobotContainer {
             Timer.delay(0.005);
         }
         Timer.delay(0.25);
-    }    
+    }
 }

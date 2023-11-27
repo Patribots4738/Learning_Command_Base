@@ -28,9 +28,10 @@ public class Neo extends CANSparkMax {
     private ControlLoopType controlType = ControlLoopType.PERCENT;
     private double targetPosition = 0;
     private double targetVelocity = 0;
-    
+
     /**
      * Creates a new NEOS motor
+     * 
      * @param id CANID of the SparkMax the NEOS is connected to.
      */
     public Neo(int id) {
@@ -39,8 +40,10 @@ public class Neo extends CANSparkMax {
 
     /**
      * Creates a new NEOS motor
-     * @param id CANID of the SparkMax the NEOS is connected to.
-     * @param mode The idle mode of the motor. If true, the motor will brake when not powered. If false, the motor will coast when not powered.
+     * 
+     * @param id   CANID of the SparkMax the NEOS is connected to.
+     * @param mode The idle mode of the motor. If true, the motor will brake when
+     *             not powered. If false, the motor will coast when not powered.
      */
     public Neo(int id, CANSparkMax.IdleMode mode) {
         this(id, false, mode);
@@ -48,9 +51,12 @@ public class Neo extends CANSparkMax {
 
     /**
      * Creates a new NEOS motor
-     * @param id CANID of the SparkMax the NEOS is connected to.
+     * 
+     * @param id       CANID of the SparkMax the NEOS is connected to.
      * @param reversed Whether the motor is reversed or not.
-     * @param mode The idle mode of the motor. If true, the motor will brake when not powered. If false, the motor will coast when not powered.
+     * @param mode     The idle mode of the motor. If true, the motor will brake
+     *                 when not powered. If false, the motor will coast when not
+     *                 powered.
      */
     public Neo(int id, boolean reversed, CANSparkMax.IdleMode mode) {
         super(id, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -58,7 +64,8 @@ public class Neo extends CANSparkMax {
         restoreFactoryDefaults();
         Timer.delay(0.050);
 
-        // If a parameter set fails, this will add more time to alleviate any bus traffic
+        // If a parameter set fails, this will add more time to alleviate any bus
+        // traffic
         // default is 20ms
         setCANTimeout(50);
 
@@ -71,7 +78,8 @@ public class Neo extends CANSparkMax {
 
     /**
      * Creates a new NEOS motor
-     * @param id CANID of the SparkMax the NEOS is connected to.
+     * 
+     * @param id       CANID of the SparkMax the NEOS is connected to.
      * @param reversed Whether the motor is reversed or not.
      */
     public Neo(int id, boolean reversed) {
@@ -80,12 +88,15 @@ public class Neo extends CANSparkMax {
 
     /**
      * Sets the target position for the NEO.
-     * @param position Position to set the NEOS to in rotations.
-     * @param arbitraryFeedForward Arbitrary feed forward to add to the motor output.
+     * 
+     * @param position             Position to set the NEOS to in rotations.
+     * @param arbitraryFeedForward Arbitrary feed forward to add to the motor
+     *                             output.
      */
     public synchronized void setTargetPosition(double position, double arbitraryFeedForward, int slot) {
         if (!FieldConstants.IS_SIMULATION) {
-            pidController.setReference(position, ControlType.kPosition, slot, arbitraryFeedForward, SparkMaxPIDController.ArbFFUnits.kVoltage);
+            pidController.setReference(position, ControlType.kPosition, slot, arbitraryFeedForward,
+                    SparkMaxPIDController.ArbFFUnits.kVoltage);
         }
         targetPosition = position;
         controlType = ControlLoopType.POSITION;
@@ -101,6 +112,7 @@ public class Neo extends CANSparkMax {
 
     /**
      * Sets the target velocity for the NEO.
+     * 
      * @param velocity Velocity to set the NEOS to in rotations per minute.
      */
     public synchronized void setTargetVelocity(double velocity) {
@@ -109,8 +121,11 @@ public class Neo extends CANSparkMax {
 
     /**
      * Sets the target velocity for the NEO.
-     * @param velocity Velocity to set the NEOS to in rotations per minute.
-     * @param arbitraryFeedForward Arbitrary feed forward to add to the motor output.
+     * 
+     * @param velocity             Velocity to set the NEOS to in rotations per
+     *                             minute.
+     * @param arbitraryFeedForward Arbitrary feed forward to add to the motor
+     *                             output.
      */
     public synchronized void setTargetVelocity(double velocity, double arbitraryFeedForward, int slot) {
         if (velocity == 0) {
@@ -150,7 +165,9 @@ public class Neo extends CANSparkMax {
 
     /**
      * Gets the position of the NEOS in rotations.
-     * @return The position of the NEOS in rotations relative to the last 0 position.
+     * 
+     * @return The position of the NEOS in rotations relative to the last 0
+     *         position.
      */
     public double getPosition() {
         double pos;
@@ -169,6 +186,7 @@ public class Neo extends CANSparkMax {
 
     /**
      * Gets the velocity of the NEOS in rotations per minute.
+     * 
      * @return The instantaneous velocity of the NEOS in rotations per minute.
      */
     public double getVelocity() {
@@ -185,6 +203,7 @@ public class Neo extends CANSparkMax {
 
     /**
      * Gets the target position of the NEOS in rotations.
+     * 
      * @return The target position of the NEOS in rotations.
      */
     public double getTargetPosition() {
@@ -193,6 +212,7 @@ public class Neo extends CANSparkMax {
 
     /**
      * Gets the target velocity of the NEOS in rotations per minute.
+     * 
      * @return The target velocity of the NEOS in rotations per minute.
      */
     public double getTargetVelocity() {
@@ -211,22 +231,26 @@ public class Neo extends CANSparkMax {
     /**
      * The function sets the proportional gain of a PID controller.
      * 
-     * @param gain The proportional gain determines the strength of the controller's response to
-     * the error between the desired setpoint and the actual process variable.
+     * @param gain The proportional gain determines the strength of the controller's
+     *             response to
+     *             the error between the desired setpoint and the actual process
+     *             variable.
      */
     public void setP(double gain) {
         pidController.setP(gain);
     }
-    
+
     /**
-     * @param pidSlot The slot number of the PID controller, as you can have multiple
+     * @param pidSlot The slot number of the PID controller, as you can have
+     *                multiple
      */
     public void setP(double gain, int pidSlot) {
         pidController.setP(gain, pidSlot);
     }
 
     /**
-     * The function sets the value of the I (integral) gain for a specified PID slot in a PID
+     * The function sets the value of the I (integral) gain for a specified PID slot
+     * in a PID
      * controller.
      * 
      * @param gain the proportional gain of the PID controller
@@ -236,7 +260,8 @@ public class Neo extends CANSparkMax {
     }
 
     /**
-     * @param pidSlot The slot number of the PID controller, as you can have multiple
+     * @param pidSlot The slot number of the PID controller, as you can have
+     *                multiple
      */
     public void setI(double gain, int pidSlot) {
         pidController.setI(gain, pidSlot);
@@ -246,14 +271,16 @@ public class Neo extends CANSparkMax {
      * The function sets the value of the derivative gain for a PID controller.
      * 
      * @param gain The derivative gain determines the rate at which the controller
-     * responds to changes in the error signal. Think of them as "brakes"
+     *             responds to changes in the error signal. Think of them as
+     *             "brakes"
      */
     public void setD(double gain) {
         pidController.setD(gain);
     }
 
     /**
-     * @param pidSlot The slot number of the PID controller, as you can have multiple
+     * @param pidSlot The slot number of the PID controller, as you can have
+     *                multiple
      */
     public void setD(double gain, int pidSlot) {
         pidController.setD(gain, pidSlot);
@@ -315,7 +342,8 @@ public class Neo extends CANSparkMax {
         return pidController.getFF();
     }
 
-    // Documentation: https://docs.revrobotics.com/sparkmax/operating-modes/control-interfaces#periodic-status-frames
+    // Documentation:
+    // https://docs.revrobotics.com/sparkmax/operating-modes/control-interfaces#periodic-status-frames
     public REVLibError changeStatusFrame(StatusFrame frame, int period) {
         REVLibError error = setPeriodicFramePeriod(frame.getFrame(), period);
 
@@ -326,7 +354,8 @@ public class Neo extends CANSparkMax {
         return changeStatusFrame(frame, frame.getDefaultPeriod());
     }
 
-    // Documentation: https://docs.revrobotics.com/sparkmax/operating-modes/control-interfaces#periodic-status-frames
+    // Documentation:
+    // https://docs.revrobotics.com/sparkmax/operating-modes/control-interfaces#periodic-status-frames
     public enum StatusFrame {
         APPLIED_FAULTS_FOLLOWER(PeriodicFrame.kStatus0, 10),
         VELOCITY_TEMP_VOLTAGE_CURRENT(PeriodicFrame.kStatus1, 20),
@@ -338,6 +367,7 @@ public class Neo extends CANSparkMax {
 
         private final PeriodicFrame frame;
         private final int defaultPeriod; // ms
+
         StatusFrame(PeriodicFrame frame, int defaultPeriod) {
             this.frame = frame;
             this.defaultPeriod = defaultPeriod;

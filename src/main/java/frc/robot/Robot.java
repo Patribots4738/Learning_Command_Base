@@ -9,9 +9,12 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.util.Constants.FieldConstants.GameMode;
 
 /**
- * The VM is configured to automatically run this class, and to call the functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the name of this class or
- * the package after creating this project, you must also update the build.gradle file in the
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to
+ * each mode, as described in the TimedRobot documentation. If you change the
+ * name of this class or
+ * the package after creating this project, you must also update the
+ * build.gradle file in the
  * project.
  */
 public class Robot extends TimedRobot {
@@ -20,20 +23,21 @@ public class Robot extends TimedRobot {
     private Command disabledCommand;
     public static double currentTimestamp = 0;
     public static double modeStartTimestamp = 0;
-    
+
     private RobotContainer robotContainer;
 
-
     @Override
-    public void robotInit() { 
+    public void robotInit() {
         robotContainer = new RobotContainer();
     }
 
     /**
-     * This function is called every 20 ms, no matter the mode. Used for items like diagnostics
+     * This function is called every 20 ms, no matter the mode. Used for items like
+     * diagnostics
      * ran during disabled, autonomous, teleoperated and test. :D
      * <p>
-     * This runs after the mode specific periodic functions, but before LiveWindow and
+     * This runs after the mode specific periodic functions, but before LiveWindow
+     * and
      * SmartDashboard integrated updating.
      */
     @Override
@@ -45,55 +49,65 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         disabledCommand = robotContainer.getDisabledCommand();
-        
-        if (disabledCommand != null) disabledCommand.schedule();
+
+        if (disabledCommand != null)
+            disabledCommand.schedule();
     }
 
     @Override
-    public void disabledPeriodic() { }
+    public void disabledPeriodic() {
+    }
 
     @Override
-    public void autonomousInit() { 
+    public void autonomousInit() {
 
         robotContainer.onEnabled(GameMode.AUTONOMOUS);
 
         autonomousCommand = robotContainer.getAutonomousCommand();
-        
-        if (autonomousCommand != null) autonomousCommand.schedule();
 
-        if (disabledCommand != null) disabledCommand.cancel();
+        if (autonomousCommand != null)
+            autonomousCommand.schedule();
+
+        if (disabledCommand != null)
+            disabledCommand.cancel();
     }
 
     @Override
-    public void autonomousPeriodic() { }
-    
+    public void autonomousPeriodic() {
+    }
+
     @Override
     public void teleopInit() {
         robotContainer.onEnabled(GameMode.TELEOP);
         // Stop our autonomous command if it is still running.
-        if (autonomousCommand != null) autonomousCommand.cancel();
-        
-        if (disabledCommand != null) disabledCommand.cancel();
+        if (autonomousCommand != null)
+            autonomousCommand.cancel();
+
+        if (disabledCommand != null)
+            disabledCommand.cancel();
     }
 
     @Override
-    public void teleopPeriodic() { }
-    
+    public void teleopPeriodic() {
+    }
+
     @Override
-    public void testInit() { 
+    public void testInit() {
         // Cancels all running commands at the start of test mode.
         robotContainer.onEnabled(GameMode.TEST);
         CommandScheduler.getInstance().cancelAll();
     }
 
     @Override
-    public void testPeriodic() { }
+    public void testPeriodic() {
+    }
 
     @Override
-    public void simulationInit() { }
+    public void simulationInit() {
+    }
 
     @Override
-    public void simulationPeriodic() { 
+    public void simulationPeriodic() {
         REVPhysicsSim.getInstance().run();
     }
 }

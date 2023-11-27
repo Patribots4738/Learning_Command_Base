@@ -64,7 +64,8 @@ public class MAXSwerveModule {
         turningEncoder.setPositionConversionFactor(ModuleConstants.TURNING_ENCODER_POSITION_FACTOR);
         turningEncoder.setVelocityConversionFactor(ModuleConstants.TURNING_ENCODER_VELOCITY_FACTOR);
 
-        // Invert the turning encoder, since the output shaft rotates in the opposite direction of
+        // Invert the turning encoder, since the output shaft rotates in the opposite
+        // direction of
         // the steering motor in the MAXSwerve Module.
         turningEncoder.setInverted(ModuleConstants.TURNING_ENCODER_INVERTED);
 
@@ -76,7 +77,8 @@ public class MAXSwerveModule {
         turningPIDController.setPositionPIDWrappingMinInput(ModuleConstants.TURNING_ENCODER_POSITION_PID_MIN_INPUT);
         turningPIDController.setPositionPIDWrappingMaxInput(ModuleConstants.TURNING_ENCODER_POSITION_PID_MAX_INPUT);
 
-        // Set the PID gains for the driving motor. Note these are example gains, and you
+        // Set the PID gains for the driving motor. Note these are example gains, and
+        // you
         // may need to tune them for your own robot!
         drivingPIDController.setP(ModuleConstants.DRIVING_P);
         drivingPIDController.setI(ModuleConstants.DRIVING_I);
@@ -85,7 +87,8 @@ public class MAXSwerveModule {
         drivingPIDController.setOutputRange(ModuleConstants.DRIVING_MIN_OUTPUT,
                 ModuleConstants.DRIVING_MAX_OUTPUT);
 
-        // Set the PID gains for the turning motor. Note these are example gains, and you
+        // Set the PID gains for the turning motor. Note these are example gains, and
+        // you
         // may need to tune them for your own robot!
         turningPIDController.setP(ModuleConstants.TURNING_P);
         turningPIDController.setI(ModuleConstants.TURNING_I);
@@ -98,8 +101,9 @@ public class MAXSwerveModule {
         turningSparkMax.setIdleMode(CANSparkMax.IdleMode.kBrake);
         drivingSparkMax.setSmartCurrentLimit(ModuleConstants.DRIVING_MOTOR_CURRENT_LIMIT);
         turningSparkMax.setSmartCurrentLimit(ModuleConstants.TURNING_MOTOR_CURRENT_LIMIT);
-        
-        // See https://docs.revrobotics.com/sparkmax/operating-modes/control-interfaces#periodic-status-5-default-rate-200ms
+
+        // See
+        // https://docs.revrobotics.com/sparkmax/operating-modes/control-interfaces#periodic-status-5-default-rate-200ms
         drivingSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 65535);
         turningSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 65535);
         turningSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 20);
@@ -168,9 +172,11 @@ public class MAXSwerveModule {
         } else {
             // Optimize the reference state to avoid spinning further than 90 degrees.
             SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(correctedDesiredState,
-                new Rotation2d(turningEncoder.getPosition()));
-            drivingPIDController.setReference(optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
-            turningPIDController.setReference(optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
+                    new Rotation2d(turningEncoder.getPosition()));
+            drivingPIDController.setReference(optimizedDesiredState.speedMetersPerSecond,
+                    CANSparkMax.ControlType.kVelocity);
+            turningPIDController.setReference(optimizedDesiredState.angle.getRadians(),
+                    CANSparkMax.ControlType.kPosition);
         }
 
         this.desiredState = desiredState;

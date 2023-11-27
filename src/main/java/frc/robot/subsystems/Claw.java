@@ -12,14 +12,13 @@ public class Claw extends SubsystemBase {
 
     private final CANSparkMax claw;
     private double desiredSpeed = 0;
-    
+
     public Claw() {
 
-        // TODO: set claw can id 
+        // TODO: set claw can id
         claw = new Neo(100);
         claw.restoreFactoryDefaults();
 
-        
         claw.setSmartCurrentLimit(30);
         // See https://docs.revrobotics.com/sparkmax/operating-modes/control-interfaces
         claw.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 65535);
@@ -59,8 +58,8 @@ public class Claw extends SubsystemBase {
         return this.desiredSpeed;
     }
 
-	public Command setDesiredSpeedCommand(DoubleSupplier speed) {
-		return null;
-	}
+    public Command setDesiredSpeedCommand(DoubleSupplier speed) {
+        return null;
+    }
 
 }

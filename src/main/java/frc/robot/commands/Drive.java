@@ -17,19 +17,18 @@ public class Drive extends CommandBase {
     private final DoubleSupplier rotationSupplier;
     private final BooleanSupplier fieldRelativeSupplier;
     private final BooleanSupplier shouldMirror;
-    
+
     public Drive(
-            Swerve swerve, 
+            Swerve swerve,
             DoubleSupplier xSupplier,
             DoubleSupplier ySupplier,
-            DoubleSupplier rotationsSupplier, 
-            BooleanSupplier rateLimitSupplier, 
+            DoubleSupplier rotationsSupplier,
+            BooleanSupplier rateLimitSupplier,
             BooleanSupplier fieldRelativeSupplier,
-            BooleanSupplier shouldMirror) 
-    {
+            BooleanSupplier shouldMirror) {
 
         this.swerve = swerve;
-        
+
         this.xSupplier = xSupplier;
         this.ySupplier = ySupplier;
         this.rotationSupplier = rotationsSupplier;
@@ -40,10 +39,11 @@ public class Drive extends CommandBase {
         addRequirements(swerve);
     }
 
-    public Drive (Swerve swerve, Supplier<ChassisSpeeds> speeds, BooleanSupplier fieldRelativeSupplier, BooleanSupplier shouldMirror) {
-        
+    public Drive(Swerve swerve, Supplier<ChassisSpeeds> speeds, BooleanSupplier fieldRelativeSupplier,
+            BooleanSupplier shouldMirror) {
+
         this.swerve = swerve;
-        
+
         this.xSupplier = () -> speeds.get().vxMetersPerSecond;
         this.ySupplier = () -> speeds.get().vyMetersPerSecond;
         this.rotationSupplier = () -> speeds.get().omegaRadiansPerSecond;
@@ -55,7 +55,8 @@ public class Drive extends CommandBase {
     }
 
     @Override
-    public void initialize() { }
+    public void initialize() {
+    }
 
     @Override
     public void execute() {
@@ -66,11 +67,10 @@ public class Drive extends CommandBase {
             y *= -1;
         }
         swerve.drive(
-            x,
-            y,
-            rotationSupplier.getAsDouble(), 
-            fieldRelativeSupplier.getAsBoolean()
-        );
+                x,
+                y,
+                rotationSupplier.getAsDouble(),
+                fieldRelativeSupplier.getAsBoolean());
     }
 
     @Override
