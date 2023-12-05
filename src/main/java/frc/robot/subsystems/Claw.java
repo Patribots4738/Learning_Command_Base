@@ -31,7 +31,8 @@ public class Claw extends SubsystemBase {
 
     @Override
     public void periodic() {
-        setSpeed(desiredSpeed);
+        // set the current speed of the motors to the desired speed
+        
     }
 
     private void setSpeed(double speed) {

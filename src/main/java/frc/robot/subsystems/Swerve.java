@@ -98,10 +98,10 @@ public class Swerve extends SubsystemBase {
     @Override
     public void periodic() {
 
-        poseEstimator.updateWithTime(Robot.currentTimestamp, getGyroAngle(), getModulePositions());
+        // Update the poseEstimator using the current timestamp (from DriverUI.java), the gyro angle, and the current module states
 
         if (FieldConstants.IS_SIMULATION) {
-
+            
             for (MAXSwerveModule mod : swerveModules) {
                 mod.tick();
             }
