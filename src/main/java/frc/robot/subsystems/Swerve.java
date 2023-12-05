@@ -98,7 +98,7 @@ public class Swerve extends SubsystemBase {
     @Override
     public void periodic() {
 
-        // Update the poseEstimator using the current timestamp (from DriverUI.java), the gyro angle, and the current module states
+        Update the poseEstimator using the current timestamp (from DriverUI.java), the gyro angle, and the current module states
 
         if (FieldConstants.IS_SIMULATION) {
             
