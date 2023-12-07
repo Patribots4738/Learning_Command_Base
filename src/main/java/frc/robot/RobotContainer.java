@@ -74,9 +74,15 @@ public class RobotContainer {
                 .onTrue(
                         setDriveSpeed(DriveConstants.MAX_TELEOP_SPEED_METERS_PER_SECOND));
 
-        Make a trigger so then when the current GAME_MODE is equal to AUTONOMOUS then set the drive speed to MAX_SPEED_METERS_PER_SECOND
-
-        // (Explain this)
+        Make a trigger so then when the current GAME_MODE 
+        is equal to AUTONOMOUS then set the drive speed to MAX_SPEED_METERS_PER_SECOND
+        
+        Create a trigger like the one above so that 
+        while the "a" button is been pressed, 
+            set the drive speed to ALIGNMENT_SPEED
+        and when the "a" button has not been pressed, 
+            set the drive speed to MAX_TELEOP_SPEED_METERS_PER_SECOND
+        
         driver.y().or(driver.x()).onTrue(
                 Commands.runOnce(() -> swerve.resetOdometry(
                         new Pose2d(
@@ -87,16 +93,21 @@ public class RobotContainer {
                                                 : 180))),
                         swerve));
 
-        when the driver hits the "x" button, use the setWheelsX method in swerve.java
+        driver.x().onTrue(
+            swerve.getSetWheelsXCommand()
+        );
+        
+        Create a trigger so while the leftBumper is pressed, 
+            run the command in swerve, getSetWheelsX
 
-        Create a trigger like the one above so that while the "a" button is been pressed, set the drive speed to ALIGNMENT_SPEED
-        and when the "a" button has not been pressed, set the drive speed to MAX_TELEOP_SPEED_METERS_PER_SECOND
+        Create another trigger so 
+            the swerve runs the toggleSpeed command in swerve 
+            when the leftStick toggles to true
+            hint (use the toggleOnTrue method)
 
-        Create another trigger so while the leftBumper is pressed, run the command in swerve, getSetWheelsX
-
-        Create another trigger so the swerve runs the toggleSpeed command in swerve when the leftStick toggles to true
-
-        Create two triggers so while the left and right triggers are true, set the desired claw speed to their respective left and right trigger axises
+        Create two triggers so while the left and right triggers are true, 
+            set the desired claw speed 
+            to their respective left and right trigger axies
 
     }
 
