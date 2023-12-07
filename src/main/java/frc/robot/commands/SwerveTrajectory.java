@@ -38,7 +38,7 @@ public class SwerveTrajectory extends CommandBase {
 
         PathPlannerState state = (PathPlannerState) trajectory.sample(elapsedTime.get());
 
-        // Use elapsedTime as a refrence for where we NEED to be
+        // Use elapsedTime as a reference for where we NEED to be
         // Then, sample the position and rotation for that time,
         // And calculate the ChassisSpeeds required to get there
         ChassisSpeeds speeds = AutoConstants.HDC.calculate(

@@ -77,7 +77,7 @@ public class RobotContainer {
         Make a trigger so then when the current GAME_MODE is equal to AUTONOMOUS then set the drive speed to MAX_SPEED_METERS_PER_SECOND
 
         // (Explain this)
-        driver.start().or(driver.back()).onTrue(
+        driver.y().or(driver.x()).onTrue(
                 Commands.runOnce(() -> swerve.resetOdometry(
                         new Pose2d(
                                 swerve.getPose().getTranslation(),
@@ -86,6 +86,8 @@ public class RobotContainer {
                                                 ? 0
                                                 : 180))),
                         swerve));
+
+        when the driver hits the "x" button, use the setWheelsX method in swerve.java
 
         Create a trigger like the one above so that while the "a" button is been pressed, set the drive speed to ALIGNMENT_SPEED
         and when the "a" button has not been pressed, set the drive speed to MAX_TELEOP_SPEED_METERS_PER_SECOND

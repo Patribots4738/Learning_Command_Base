@@ -147,12 +147,11 @@ public class Swerve extends SubsystemBase {
         ySpeed *= (DriveConstants.MAX_SPEED_METERS_PER_SECOND * speedMultiplier);
         rotSpeed *= (DriveConstants.DYNAMIC_MAX_ANGULAR_SPEED * speedMultiplier);
 
-        SwerveModuleState[] swerveModuleStates = DriveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(
-                fieldRelative
-                        ? discretize(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotSpeed,
-                                getPose().getRotation()))
-                        : discretize(new ChassisSpeeds(xSpeed, ySpeed, rotSpeed)));
+        SwerveModuleState[] swerveModuleStates = 
+            DriveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(
 
+            );
+                
         setModuleStates(swerveModuleStates);
     }
 
@@ -206,7 +205,7 @@ public class Swerve extends SubsystemBase {
         rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
     }
 
-    public Command getSetWheelsX() {
+    public Command getSetWheelsXCommand() {
         return runOnce(this::setWheelsX);
     }
 

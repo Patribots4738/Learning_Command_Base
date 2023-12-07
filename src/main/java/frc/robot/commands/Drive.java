@@ -66,11 +66,7 @@ public class Drive extends CommandBase {
             x *= -1;
             y *= -1;
         }
-        swerve.drive(
-                x,
-                y,
-                rotationSupplier.getAsDouble(),
-                fieldRelativeSupplier.getAsBoolean());
+        use the following variables to drive the swerve using swerve.drive
     }
 
     @Override
