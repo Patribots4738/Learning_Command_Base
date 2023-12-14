@@ -39,7 +39,9 @@ public class Drive extends CommandBase {
         addRequirements(swerve);
     }
 
-    public Drive(Swerve swerve, Supplier<ChassisSpeeds> speeds, BooleanSupplier fieldRelativeSupplier,
+    public Drive(Swerve swerve, 
+            Supplier<ChassisSpeeds> speeds, 
+            BooleanSupplier fieldRelativeSupplier,
             BooleanSupplier shouldMirror) {
 
         this.swerve = swerve;
