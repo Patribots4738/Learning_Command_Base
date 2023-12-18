@@ -18,6 +18,7 @@ import frc.robot.util.ADIS16470_IMU;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
+import frc.robot.commands.Drive;
 import frc.robot.util.Constants.DriveConstants;
 import frc.robot.util.Constants.FieldConstants;
 
@@ -98,8 +99,8 @@ public class Swerve extends SubsystemBase {
     @Override
     public void periodic() {
 
-        Update the poseEstimator using the current timestamp (from DriverUI.java), the gyro angle, and the current module states
-        
+        poseEstimator.update(getGyroAngle(), getModulePositions());
+
         if (FieldConstants.IS_SIMULATION) {
             
             for (MAXSwerveModule mod : swerveModules) {
@@ -142,15 +143,24 @@ public class Swerve extends SubsystemBase {
     }
 
     public void drive(double xSpeed, double ySpeed, double rotSpeed, boolean fieldRelative) {
-
+        
         xSpeed *= (DriveConstants.MAX_SPEED_METERS_PER_SECOND * speedMultiplier);
         ySpeed *= (DriveConstants.MAX_SPEED_METERS_PER_SECOND * speedMultiplier);
         rotSpeed *= (DriveConstants.DYNAMIC_MAX_ANGULAR_SPEED * speedMultiplier);
 
-        SwerveModuleState[] swerveModuleStates = 
+        SwerveModuleState[] swerveModuleStates;
+        if (fieldRelative == true) {
+            swerveModuleStates = 
             DriveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(
-
+                ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotSpeed, getGyroAngle())
             );
+        } else {
+            swerveModuleStates = 
+            DriveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(
+                new ChassisSpeeds(xSpeed, ySpeed, rotSpeed)
+            );
+        }
+        //new ChassisSpeeds(xSpeed, ySpeed, rotSpeed);
                 
         setModuleStates(swerveModuleStates);
     }
