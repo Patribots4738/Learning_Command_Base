@@ -64,12 +64,19 @@ public class Drive extends CommandBase {
     public void execute() {
         double x = xSupplier.getAsDouble();
         double y = ySupplier.getAsDouble();
+        double rotation = rotationSupplier.getAsDouble();
+        boolean fieldRelative = fieldRelativeSupplier.getAsBoolean();
+
         if (shouldMirror.getAsBoolean()) {
             x *= -1;
             y *= -1;
         }
-        use the following variables to drive the swerve using swerve.drive
+        swerve.drive(x, y, rotation, fieldRelative);
+
+        //use the following variables to drive the swerve using swerve.drive
+
     }
+
 
     @Override
     public void end(boolean interrupted) {

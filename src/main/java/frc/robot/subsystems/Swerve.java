@@ -14,6 +14,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.util.ADIS16470_IMU;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -98,8 +99,9 @@ public class Swerve extends SubsystemBase {
     @Override
     public void periodic() {
 
-        Update the poseEstimator using the current timestamp (from DriverUI.java), the gyro angle, and the current module states
+        //Update the poseEstimator using the current timestamp (from DriverUI.java), the gyro angle, and the current module states
         
+        poseEstimator.updateWithTime(Timer.getFPGATimestamp(), getGyroAngle(), getModulePositions());
         if (FieldConstants.IS_SIMULATION) {
             
             for (MAXSwerveModule mod : swerveModules) {
@@ -148,9 +150,7 @@ public class Swerve extends SubsystemBase {
         rotSpeed *= (DriveConstants.DYNAMIC_MAX_ANGULAR_SPEED * speedMultiplier);
 
         SwerveModuleState[] swerveModuleStates = 
-            DriveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(
-
-            );
+            DriveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(new ChassisSpeeds(xSpeed, ySpeed, rotSpeed));
                 
         setModuleStates(swerveModuleStates);
     }
