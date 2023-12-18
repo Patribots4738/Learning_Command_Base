@@ -79,6 +79,7 @@ public class RobotContainer {
                 .onTrue(
                         setDriveSpeed(DriveConstants.MAX_SPEED_METERS_PER_SECOND));
 
+
         driver.y().or(driver.x()).onTrue(
                 Commands.runOnce(() -> swerve.resetOdometry(
                         new Pose2d(
@@ -98,9 +99,35 @@ public class RobotContainer {
             swerve.getSetWheelsXCommand()
         );
 
-        driver.leftTrigger(.5).whileTrue(
-            claw.setSpeedCommand(driver.getLeftTriggerAxis())
+        driver.leftTrigger().whileTrue(
+            claw.setDesiredSpeedCommand(() -> driver.getLeftTriggerAxis())
         );
+
+        
+        driver.a().onTrue(
+          setDriveSpeed(FieldConstants.ALIGNMENT_SPEED)  
+        );
+        
+        driver.a().onFalse(
+            setDriveSpeed(DriveConstants.MAX_TELEOP_SPEED_METERS_PER_SECOND)
+        );
+        
+        driver.leftBumper().onTrue(
+            swerve.getSetWheelsXCommand()
+        );
+
+        driver.leftStick().toggleOnTrue(
+            swerve.toggleSpeed()
+        );
+        
+        driver.leftStick().onTrue(
+            Commands.runOnce(() -> claw.setSpeed(driver.getLeftTriggerAxis()))
+        );
+
+        driver.rightStick().onTrue(
+           Commands.runOnce(() -> claw.setSpeed(driver.getRightTriggerAxis()))
+        );
+
 
     }
 
