@@ -23,6 +23,7 @@ import frc.robot.Robot;
  * numerical or boolean
  * constants. This class should not be used for any other purpose. All constants
  * should be declared
+ * 
  * globally (i.e. public static). Do not put anything functional in this class.
  *
  * <p>
@@ -32,6 +33,9 @@ import frc.robot.Robot;
  */
 public final class Constants {
     public static final class DriveConstants {
+        public static final double ROBOT_LENGTH_METERS = Units.inchesToMeters(25);
+
+
         // Driving Parameters - Note that these are not the maximum capable speeds of
         // the robot, rather the allowed maximum speeds
         public static double MAX_SPEED_METERS_PER_SECOND = AutoConstants.MAX_SPEED_METERS_PER_SECOND;

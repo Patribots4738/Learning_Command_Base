@@ -11,7 +11,8 @@ public class Claw extends SubsystemBase {
 
     public Claw() {
 
-        claw = new Neo(1);
+        claw = new Neo(10);
+       
         claw.restoreFactoryDefaults();
 
         claw.setSmartCurrentLimit(30);
@@ -21,6 +22,7 @@ public class Claw extends SubsystemBase {
         claw.setInverted(false);
 
         setBrakeMode();
+        
 
     }
 
