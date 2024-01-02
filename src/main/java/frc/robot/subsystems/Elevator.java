@@ -8,11 +8,18 @@ public class Elevator extends SubsystemBase {
 
     public Elevator() {
         elevator = new Neo(9);
-        elevator.setPID(0.1, 0, 0); // 😳
+        elevator.setPID(0.1, 0, 0);
+    
+        
     }
 
-    @Override
-    public void periodic() {
-        // This method will be called once per scheduler run
+    public void setSpeed(double speed) {
+        elevator.setPosition(speed);
+
+    }
+
+
+    public double getPosition() {
+        return elevator.getPosition();
     }
 }

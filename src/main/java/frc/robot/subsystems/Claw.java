@@ -15,8 +15,8 @@ public class Claw extends SubsystemBase {
 
     public Claw() {
 
-        // TODO: set claw can id
-        claw = new Neo(100);
+        //set claw can id
+        claw = new Neo(10);
         claw.restoreFactoryDefaults();
 
         claw.setSmartCurrentLimit(30);
@@ -31,7 +31,6 @@ public class Claw extends SubsystemBase {
 
     @Override
     public void periodic() {
-        set the current speed of the motors to the desired speed
 
     }
 
