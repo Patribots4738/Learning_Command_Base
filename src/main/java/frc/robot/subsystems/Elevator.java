@@ -24,18 +24,30 @@ public class Elevator extends SubsystemBase {
     private Command moveUpOrDown(boolean goingUp) {
         elevator.getPosition();
         if (goingUp) {
-            return runOnce(() -> elevator.setPosition(0.8));
+            return runOnce(() -> elevator.set(0.8));
         }
         else {
-            return runOnce(() -> elevator.set(0));
+            return runOnce(() -> elevator.set(-0.8));
         }
     }
    
     public Command motionUp() {
-        return moveUpOrDown(true);
+        if(elevator.getPosition() >= 1) {
+            return runOnce(() -> elevator.set(0.5));
+        }
+        else{
+            return runOnce(() -> elevator.set(0));
+        }
+           // return moveUpOrDown(true);
     }
     
     public Command motionDown() {
-        return moveUpOrDown(false);
+        if (elevator.getPosition() >= 1 && elevator.getPosition() <= 9) {
+            return runOnce(() -> elevator.set(-0.5));
+        }
+        else{
+            return runOnce(() -> elevator.set(0));
+        }
+        //return moveUpOrDown(false);
     }
 }
