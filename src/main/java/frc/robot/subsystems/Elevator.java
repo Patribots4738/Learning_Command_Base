@@ -13,6 +13,7 @@ public class Elevator extends SubsystemBase {
     public Elevator() {
         elevator = new Neo(9);
         elevator.setPID(0.1, 0, 0); // 😳
+        elevator.setSoftLimit(null, 0);
     }
 
     @Override
@@ -20,17 +21,21 @@ public class Elevator extends SubsystemBase {
       // CommandScheduler.getInstance().run(); //This method will be called once per scheduler run
     }
 
+    private Command moveUpOrDown(boolean goingUp) {
+        elevator.getPosition();
+        if (goingUp) {
+            return runOnce(() -> elevator.setPosition(0.8));
+        }
+        else {
+            return runOnce(() -> elevator.set(0));
+        }
+    }
    
-    public Command motionUp(){
-            return runOnce(() -> elevator.set(0.5));
+    public Command motionUp() {
+        return moveUpOrDown(true);
     }
-
-    public Command motionDown(){
-            return runOnce(() -> elevator.set(-0.5));
+    
+    public Command motionDown() {
+        return moveUpOrDown(false);
     }
-    public void limits(){
-        double maxlimit = elevator.setrotation(0.8);
-        double minlimit = elevator.setrotation(1.0);
-    }
-
 }
