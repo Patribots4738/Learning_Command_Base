@@ -8,13 +8,19 @@ import edu.wpi.first.math.MatBuilder;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.ADIS16470_IMU;
+import frc.robot.util.Pose3dLogger;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
@@ -98,8 +104,23 @@ public class Swerve extends SubsystemBase {
     @Override
     public void periodic() {
 
-        Update the poseEstimator using the current timestamp (from DriverUI.java), the gyro angle, and the current module states
+      SmartDashboard.putNumberArray("RobotPose3d",
+                Pose3dLogger.composePose3ds(
+                        new Pose3d(
+                                new Translation3d(
+                                        getPose().getX(),
+                                        getPose().getY(),
+                                        Math.hypot(
+                                                getRoll().getSin()
+                                                        * DriveConstants.ROBOT_LENGTH_METERS / 2.0,
+                                                getPitch().getSin() *
+                                                        DriveConstants.ROBOT_LENGTH_METERS / 2.0)),
+                                new Rotation3d(getRoll().getRadians(), getPitch().getRadians(),
+                                        getYaw().getRadians()))));
+                                        
+        //Update the poseEstimator using the current timestamp (from DriverUI.java), the gyro angle, and the current module states
         
+        poseEstimator.updateWithTime(Timer.getFPGATimestamp(), getGyroAngle(), getModulePositions());
         if (FieldConstants.IS_SIMULATION) {
             
             for (MAXSwerveModule mod : swerveModules) {
@@ -148,9 +169,7 @@ public class Swerve extends SubsystemBase {
         rotSpeed *= (DriveConstants.DYNAMIC_MAX_ANGULAR_SPEED * speedMultiplier);
 
         SwerveModuleState[] swerveModuleStates = 
-            DriveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(
-
-            );
+            DriveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(new ChassisSpeeds(xSpeed, ySpeed, rotSpeed));
                 
         setModuleStates(swerveModuleStates);
     }
