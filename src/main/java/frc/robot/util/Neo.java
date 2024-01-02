@@ -387,4 +387,8 @@ public class Neo extends CANSparkMax {
         VELOCITY,
         PERCENT;
     }
+
+    public double setrotation(double d) {
+        return 0;
+    }
 }

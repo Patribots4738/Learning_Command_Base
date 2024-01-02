@@ -26,7 +26,7 @@ import io.github.oblarg.oblog.Logger;
 
 public class RobotContainer {
 
-    private final PatriBoxController driver;
+    public final PatriBoxController driver;
     private final PatriBoxController operator;
 
     private final Swerve swerve;
@@ -110,6 +110,14 @@ public class RobotContainer {
 
         driver.rightStick().whileTrue(
             Commands.runOnce(() -> claw.setSpeed(driver.getRightTriggerAxis()))
+        );
+
+        driver.povUp().onTrue(
+             elevator.motionUp()
+        );
+
+        driver.povDown().onTrue(
+            elevator.motionDown()
         );
 
     }
